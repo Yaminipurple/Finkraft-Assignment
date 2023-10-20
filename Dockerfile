@@ -1,10 +1,11 @@
 FROM python:3.9-slim-buster
 
 WORKDIR /app
-COPY Python.py ./app/testing.py
+RUN apt-get update
+RUN apt-get install -y python3-pip
+RUN pip3 install Flask
 
-RUN python3 testing.py
-
+COPY Python.py /app
 EXPOSE 5000
 
 CMD ["gunicorn", "-b", "0.0.0.0:5000", "run:app"]
