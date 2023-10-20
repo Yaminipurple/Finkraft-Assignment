@@ -1,0 +1,12 @@
+---
+- name: Deploy customised container on all qaserver
+  hosts: all
+  tasks:
+    - name: Deploy container
+      docker_container:
+        name: myapp
+        image: yaminijakkamsetti/myapp
+        port:
+          - 8080:8080
+...
+
