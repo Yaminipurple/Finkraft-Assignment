@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment
+  labels:
+    author: yamini
+    type: appserver
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      type: appserver
+  template:
+    metadata:
+      name: myapp-pod
+      labels:
+        type: appserver
+    spec:
+      containers:
+        - name: myapp
+          image: yaminijakkamsetti/myapp
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service
+  labels:
+    author: yamini
+spec:
+  type: NodePort
+  selector:
+    type: appserver
+  ports:
+    - targetPort: 5000
+      port: 5000
+      nodePort: 30008
+...
