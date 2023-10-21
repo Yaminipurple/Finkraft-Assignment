@@ -5,17 +5,17 @@ metadata:
   name: myapp-deployment
   labels:
     author: yamini
-    type: appserver
+    app: python
 spec:
   replicas: 2
   selector:
     matchLabels:
-      type: appserver
+      app: python
   template:
     metadata:
       name: myapp-pod
       labels:
-        type: appserver
+        app: python
     spec:
       containers:
         - name: myapp
@@ -30,7 +30,7 @@ metadata:
 spec:
   type: NodePort
   selector:
-    type: appserver
+    app: python
   ports:
     - targetPort: 5000
       port: 5000
