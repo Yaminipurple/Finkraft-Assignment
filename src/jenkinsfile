@@ -1,0 +1,59 @@
+pipeline
+{
+    agent any
+    stages
+    {
+        stage ('Download')
+        {
+            steps
+            {
+                git 'https://github.com/Yaminipurple/Finkraft-Assignment.git'
+            }
+        }
+        stage('CopyPython.py')
+        {
+            steps
+            {
+                sh 'cp /var/lib/jenkins/workspace/PythonPipeline/src/app/python.py .'
+            }
+        }
+        stage ('Buildimage')
+        {
+            steps
+            {
+                sh 'docker build -t yaminijakkamsetti/myapp .'
+            }
+        }
+         stage ('push docker image')
+         {
+             steps
+             {
+                 sh 'docker push yaminijakkamsetti/myapp'
+             }
+         }
+         stage ('Deploy into qaserver using ansible')
+         {
+             steps
+             {
+                 sh 'ssh ubuntu@ip_of_ansible_controller  ansible-playbook deploy-container.yml -b'
+             }
+         }
+         stage ('Testing')
+         {
+             steps
+             {
+                 git 'https://github.com/Yaminipurple/Python-Testing.git'
+                 
+                 sh 'python3 testing.py'
+             }
+         }
+         stage ('Deploy to prod server on kubernetes')
+         {
+             steps
+             {
+                 sh 'ssh ec2-user@ip_of_kops_server kubectl apply -f deploy-prod.yml'
+             }
+         }
+    }
+}
+
