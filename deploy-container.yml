@@ -7,6 +7,6 @@
         name: myapp
         image: yaminijakkamsetti/myapp
         port:
-          - 8080:8080
+          - 5000:5000
 ...
 
